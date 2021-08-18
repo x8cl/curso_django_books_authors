@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ author.first_name }} {{ author.last_name }}{% endblock %}
+{% block header %}{{ author.first_name }} {{ author.last_name }}{% endblock %}
+{% block subheader %}ID: {{ author.id }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h5>Notes:</h5>
+        <p>{{ author.notas }}</p>
+    </div>
+    <hr>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h5>Books:</h5>
+        <ul>
+            {% for book in books %}
+            <li><a href="{% url 'books_authors_app:book' book.id %}">{{ book.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <form action="{% url 'books_authors_app:addbooktoauthor' author.id %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    <select class="form-select" name="new_book" id="new_book">
+                        <option select>- Select a book -</option>
+                        {% for book in no_books %}
+                        <option value="{{ book.id }}">{{ book.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

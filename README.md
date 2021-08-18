@@ -1,0 +1,1 @@
+Asignatura: Libros / Autores Shell y Plantillas "Aplicaciones Full Stack Python Trainee - INACAP - 2021"

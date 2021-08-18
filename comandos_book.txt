@@ -1,0 +1,61 @@
+from books_authors_app.models import *
+
+#Consulta: crea 5 libros con los siguientes nombres: C Sharp, Java, Python, PHP, Ruby
+Book.objects.create(title="C Sharp", desc="Libro 1")
+Book.objects.create(title="Java", desc="Libro 2")
+Book.objects.create(title="Pyhton", desc="Libro 3")
+Book.objects.create(title="PHP", desc="Libro 4")
+Book.objects.create(title="Ruby", desc="Libro 5")
+
+
+#Consulta: Crea 5 autores diferentes: Jane Austen, Emily Dickinson, Fyodor Dostoevksy, William Shakespeare, Lau Tzu
+Author.objects.create(first_name="Jane", last_name="Austen")
+Author.objects.create(first_name="Emily", last_name="Dickinson")
+Author.objects.create(first_name="Fyodor", last_name="Dostoevksy")
+Author.objects.create(first_name="William", last_name="Shakespeare")
+Author.objects.create(first_name="Lau", last_name="Tzu")
+
+#Cree y ejecute los archivos de migración para actualizar la tabla en su base de datos.
+python.exe .\manage.py makemigrations books_authors_app
+python.exe .\manage.py migrate --database=data
+
+#Consulta: cambie el nombre del libro de C Sharp a C #
+book_upd = Book.objects.get(title="C Sharp")
+book_upd.title = "C#"
+book_upd.save()
+
+#Consulta: cambie el nombre del cuarto autor a Bill
+auth_upd = Author.objects.all()[3]
+auth_upd.first_name = "Bill"
+auth_upd.save()
+
+#Consulta: Asigna el primer autor a los primeros 2 libros.
+primer_auth = Author.objects.all()[0]
+un_book = Book.objects.all()[0]
+dos_book = Book.objects.all()[1]
+primer_auth.books.add(un_book, dos_book)
+
+#Consulta: Asigne el segundo autor a los primeros 3 libros
+Author.objects.all()[1].books.add(Book.objects.all()[0], Book.objects.all()[1], Book.objects.all()[2])
+
+#Consulta: Asigna el tercer autor a los primeros 4 libros.
+Author.objects.all()[2].books.add(Book.objects.all()[0], Book.objects.all()[1], Book.objects.all()[2], Book.objects.all()[3])
+
+#Consulta: Asigne el cuarto autor a los primeros 5 libros (o en otras palabras, todos los libros)
+Author.objects.all()[3].books.add(Book.objects.all()[0], Book.objects.all()[1], Book.objects.all()[2], Book.objects.all()[3], Book.objects.all()[4])
+
+#Consulta: recupera a todos los autores del tercer libro
+Book.objects.all()[2].authors.all()
+
+#Consulta: eliminar al primer autor del tercer libro
+auth_rm = Book.objects.all()[2].authors.all()[0]
+Book.objects.all()[2].authors.remove(auth_rm)
+
+#Consulta: Agregue el quinto autor como uno de los autores del segundo libro.
+Book.objects.all()[1].authors.add(Author.objects.all()[4])
+
+#Consulta: Encuentra todos los libros de los que el tercer autor es parte
+Author.objects.all()[2].books.all()
+
+#Consulta: Encuentra todos los autores que contribuyeron al quinto libro.
+Book.objects.all()[4].authors.all()
